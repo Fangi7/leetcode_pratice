@@ -1,0 +1,108 @@
+####python
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        ans = ListNode()
+        cur = ans
+        carry = 0
+        while l1 or l2 or carry:
+            sum = 0
+            # another syntex:  l1 = l1.next if l1 else None
+            if l1:
+                sum += l1.val
+                l1 = l1.next
+            if l2:
+                sum += l2.val
+                l2 = l2.next
+            if carry == 1 :
+                sum += 1
+                carry = 0
+            #better method:  carry, val = divmod(val, 10)
+            if sum >= 10:
+                sum %= 10
+                carry = 1
+            cur.next = ListNode(sum)
+            cur = cur.next
+        return ans.next
+        
+        
+        
+  
+  ####C++
+  /**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* i1 = l1;ListNode* i2 = l2;
+        int carry = 0;
+        ListNode* ansHead = NULL,*pre = ansHead;
+        while(i1!=NULL && i2!= NULL){
+            int sum = i1->val + i2->val + carry;
+            if(sum >=10) {
+                carry = 1;
+                sum-=10;
+            }
+            else carry = 0;
+            if(ansHead == NULL) {
+                ansHead = new ListNode(sum);
+                pre = ansHead;
+            }
+            else{
+                ListNode* newNode = new ListNode(sum);
+                pre->next = newNode;
+                pre = newNode;
+            } 
+            i1 = i1->next;
+            i2 = i2->next;
+        }
+       if(i1 == NULL){
+           while(i2!=NULL){
+                int sum = i2->val + carry;
+                if(sum >=10) {
+                    carry = 1;
+                    sum-=10;
+                }
+                else carry = 0;
+                ListNode* newNode = new ListNode(sum);
+                pre->next = newNode;
+                pre = newNode;
+                i2 = i2->next;
+           }
+       } 
+        else if(i2 == NULL){
+           while(i1!=NULL){
+                int sum = i1->val + carry;
+                if(sum >=10) {
+                    carry = 1;
+                    sum-=10;
+                }
+                else carry = 0;
+                ListNode* newNode = new ListNode(sum);
+                pre->next = newNode;
+                pre = newNode;
+                i1 = i1->next;
+           }
+       }
+        if(carry == 1){
+                ListNode* newNode = new ListNode(1);
+                pre->next = newNode;
+                pre = newNode; 
+        }
+      return ansHead;  
+        
+    }
+};
